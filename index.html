@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <title>document</title>
+  </head>
+
+  <body>
+    <div class = "container">
+        <div class = "row"> </div>
+                <div class = "col-sm-12" >
+                    <br>
+                    <button class ="btn btn-primary" onclick="showtabregister()">register</button>
+                    <button class ="btn btn-primary" onclick="showtabpendaftar()">List pendaftar</button>
+                    <br>
+                </div>
+                <div id = "tab_register">
+                        <h3>register</h3>
+                        <div class ="form-group"></div>
+                        <label for="nama">nama</label>
+                        <input type="text"  class="form-control" id="inputnama" placeholder="masukan nama anda minimal 10 karakter">
+                </div> 
+                <div id = "tab_register">
+                    
+                    <div class ="form-group"></div>
+                    <label for="umur">umur</label>
+                    <input type="text"  class="form-control" id="inputumur" placeholder="masukan umur anda minimal 25 tahun">
+            </div> 
+            <div id = "tab_register">
+                
+                <div class ="form-group"></div>
+                <label for="saku">saku</label>
+                <input type="text"  class="form-control" id="inputsaku" placeholder="masukan saku anda minimal 100.000 - 1.000.000">
+        </div> 
+        <button class="btn btn-primary"
+         onclick="submitregister()">submit</button>
+                <div id = "tab_list_pendaftar" class="row">
+                  <div class="col-sm-12"> 
+                    <h3>list pendaftar</h3> 
+                    <h5>resume</h5>
+                    <p id ="resume" ></p>
+                    <table class="table" id="tablelist"></table>
+                    <thead>
+                      <tr>
+                        <td>nama</td>
+                        <td>umur</td>
+                        <td>saku</td>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </div>
+
+                    
+
+                </div>
+       
+    </div>      
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  ,<script src = "lib.js"></script>
+  <script>
+       let data = []
+       console.log(data)
+  function submitregister(){
+    let nama = document.getElementById("input nama")
+    let umur = document.getElementById("input umur")
+    let saku = document.getElementById("input saku")
+    let resume = document.getElementById("resume")
+    let total_umur = 0 
+    let total_saku = 0 
+    let rata_rata_umur = 0
+    let rata_rata_saku = 0
+    if (Number(umur.value) >= 25 ){
+        if     (Number(saku.value) >= 100000 && Number(saku.value) < 1000000){
+          if (nama.value.lenght >= 10){
+              data.push({
+                    nama : nama.value,
+                    umur : umur.value,
+                    saku : saku.value
+              })
+              const trdel =document.getElementsByTagName("tbody")[0]
+              trdel.remove()
+              const tbody = document.createElement("tbody")
+              for (let index = 0; index < data.length; index++) {
+                const tr = document.createElement("tr")
+                tablelist = document.getElementById("tablelist")
+
+                const tdnama = document.createElement("td")
+                const valuenama =document.createTextNode(data[index].nama)
+                tdnama.appendChild(valuenama)
+
+                const tdumur = document.createElement("td")
+                const valueumur =document.createTextNode(data[index].umur)
+                tdumur.appendChild(valueumur)
+
+                const tdsaku = document.createElement("td")
+                const valuesaku =document.createTextNode(data[index].saku)
+                tdsaku.appendChild(valuesaku)
+
+                tr.appendChild(tdnama)
+                tr.appendChild(tdumur)
+                tr.appendChild(tdsaku)
+                tbody.appendChild(tr)
+      
+                // total_umur += Number(data[index].umur)
+                // total_saku += Number(data[index].saku)
+
+
+              } 
+
+              const calc = new statistik(data)
+              // calc.hitungtotalumur()
+              // calc.hitungtotalsaku()
+              // calc.outputdata()
+
+              calc.hitungall()
+
+                total_saku = calc.totalsaku
+                total_umur = calc.totalumur
+
+              resume.innerHTML = `rata rata pendaftar  memiliki uang saku sebesar ${Math.round(total_saku/data.length)} dengan rata rata umur ${Math.round(total_umur/data.length)}`
+                tablelist.appendChild(tbody)
+            console.log(data)
+
+          }else{
+            alert("panjang nama kurang dari 10 karakter")
+          }
+         }else{
+            alert("saku minimal 100.000 - 1.000.000")
+          }
+        }else{
+            alert("umur kurang dari 25 tahun ")
+          }
+    }  
+  
+
+
+        document.getElementById("tab_register").style.display = "block"
+        document.getElementById("tab_list_pendaftar").style.display = "none"
+
+        function showtabregister(){
+            document.getElementById("tab_register").style.display = "block"
+        document.getElementById("tab_list_pendaftar").style.display = "none"
+        }
+
+        function showtabpendaftar(){
+            document.getElementById("tab_register").style.display = "none"
+        document.getElementById("tab_list_pendaftar").style.display = "block"
+        }
+  </script>
+</body>
+</html>
